@@ -8,16 +8,18 @@ from typing import List, Union
 
 from . import constants, ffi, util
 
-_HAS_PID = False
-
-
 if sys.platform.startswith("freebsd"):
+    _HAS_PID = True
 
     class _XcuredCr(ctypes.Union):  # pylint: disable=too-few-public-methods
         _fields_ = [
             ("cr_pid", ffi.pid_t),
             ("_cr_unused1", ctypes.c_void_p),
         ]
+
+
+else:
+    _HAS_PID = False
 
 
 class _Xucred(ctypes.Structure):  # pylint: disable=too-few-public-methods
