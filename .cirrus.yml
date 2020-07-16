@@ -42,7 +42,7 @@ task:
         $PIP_EXE install -U pip
       fi
     - $PIP_EXE install pipenv
-    - pipenv install --dev
+    - pipenv install --dev --deploy
 
   lint_script:
     - pipenv run ./scripts/check.sh

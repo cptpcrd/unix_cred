@@ -29,7 +29,7 @@ jobs:
         run: pip install pipenv
 
       - name: Install dependencies
-        run: pipenv install --dev
+        run: pipenv install --dev --deploy
 
       - name: Lint code
         run: pipenv run ./scripts/check.sh
@@ -57,7 +57,7 @@ jobs:
         run: pip install pipenv
 
       - name: Install dependencies
-        run: pipenv install --dev
+        run: pipenv install --dev --deploy
 
       - name: Format code
         run: |
@@ -88,7 +88,7 @@ jobs:
         run: pip install pipenv
 
       - name: Install dependencies
-        run: pipenv install --dev
+        run: pipenv install --dev --deploy
 
       - name: Run tests
         run: pipenv run pytest --basetemp=/tmp/pytest-unix_cred
