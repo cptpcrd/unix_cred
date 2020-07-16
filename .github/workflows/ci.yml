@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: pipenv install --dev
 
-      - name: Format code
+      - name: Lint code
         run: pipenv run ./scripts/check.sh
 
   format:
@@ -90,5 +90,5 @@ jobs:
       - name: Install dependencies
         run: pipenv install --dev
 
-      - name: Format code
+      - name: Run tests
         run: pipenv run pytest
