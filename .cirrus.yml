@@ -19,18 +19,18 @@ task:
   matrix:
     - env:
         PYTHON_VERSION: 3.8
-        PYTHON_PORT_NAME: python38
+        PYTHON_PORT_NAMES: python38 py38-sqlite3
         PYTHON_EXE: python3.8
         PIP_EXE: python3.8 -m pip
     - env:
         PYTHON_VERSION: 3.7
-        PYTHON_PORT_NAME: python37
+        PYTHON_PORT_NAMES: python37 py37-sqlite3
         PIP_PORT_NAME: py37-pip
         PYTHON_EXE: python3.7
         PIP_EXE: pip-3.7
 
   install_script:
-    - pkg install -y $PYTHON_PORT_NAME cmake ninja gcc
+    - pkg install -y $PYTHON_PORT_NAMES cmake ninja gcc
     - |
       set -e
       if [ -n "$PIP_PORT_NAME" ]; then
