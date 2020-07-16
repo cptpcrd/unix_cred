@@ -1,0 +1,94 @@
+name: CI
+on: [push, pull_request]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  lint:
+    name: Linting
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        python-version: [3.7, 3.8]
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Set up repo
+        uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install pipenv
+        run: pip install pipenv
+
+      - name: Install dependencies
+        run: pipenv install --dev
+
+      - name: Format code
+        run: pipenv run ./scripts/check.sh
+
+  format:
+    name: Formatting
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        python-version: [3.7, 3.8]
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Set up repo
+        uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install pipenv
+        run: pip install pipenv
+
+      - name: Install dependencies
+        run: pipenv install --dev
+
+      - name: Format code
+        run: |
+          set -e
+          pipenv run ./scripts/format.sh
+          [ -z "$(git status --porcelain=v1)" ]
+
+  test:
+    name: Tests
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        python-version: [3.7, 3.8]
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Set up repo
+        uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install pipenv
+        run: pip install pipenv
+
+      - name: Install dependencies
+        run: pipenv install --dev
+
+      - name: Format code
+        run: pipenv run pytest
