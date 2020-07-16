@@ -44,10 +44,5 @@ task:
     - $PIP_EXE install pipenv
     - pipenv install --dev --deploy
 
-  lint_script:
-    - pipenv run ./scripts/check.sh
-  format_script:
-    - pipenv run ./scripts/format.sh
-    - test -z "$(git status --porcelain=v1)"
   test_script:
     - pipenv run pytest
