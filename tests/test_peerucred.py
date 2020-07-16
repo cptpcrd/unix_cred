@@ -28,7 +28,7 @@ if sys.platform.startswith(("solaris", "illumos")):
             assert cred.egid == os.getegid()
             assert cred.sgid == os.getegid()
 
-            assert set(cred.groups) == set(os.getgroups())
+            assert set(cred.groups) <= set(os.getgroups())
 
     def test_peerucred_pair() -> None:
         sock_a, sock_b = socket.socketpair(socket.AF_UNIX)
@@ -49,4 +49,4 @@ if sys.platform.startswith(("solaris", "illumos")):
             assert cred.egid == os.getegid()
             assert cred.sgid == os.getegid()
 
-            assert set(cred.groups) == set(os.getgroups())
+            assert set(cred.groups) <= set(os.getgroups())

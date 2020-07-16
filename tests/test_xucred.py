@@ -20,7 +20,7 @@ if sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
         ]:
             assert cred.uid == os.geteuid()
             assert cred.gid == os.getegid()
-            assert set(cred.groups) == set(os.getgroups())
+            assert set(cred.groups) <= set(os.getgroups())
 
             if hasattr(cred, "pid"):
                 assert cred.pid in (0, os.getpid())
@@ -36,7 +36,7 @@ if sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
         ]:
             assert cred.uid == os.geteuid()
             assert cred.gid == os.getegid()
-            assert set(cred.groups) == set(os.getgroups())
+            assert set(cred.groups) <= set(os.getgroups())
 
             if hasattr(cred, "pid"):
                 assert cred.pid in (0, os.getpid())
