@@ -30,7 +30,7 @@ task:
         PIP_EXE: pip-3.7
 
   install_script:
-    - pkg install -y $PYTHON_PORT_NAME
+    - pkg install -y $PYTHON_PORT_NAME cmake
     - |
       set -e
       if [ -n "$PIP_PORT_NAME" ]; then
