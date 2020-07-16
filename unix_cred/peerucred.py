@@ -29,7 +29,10 @@ ffi.libc.ucred_getegid.restype = ffi.gid_t
 ffi.libc.ucred_getsgid.argtypes = (ctypes.c_void_p,)
 ffi.libc.ucred_getsgid.restype = ffi.gid_t
 
-ffi.libc.ucred_getgroups.argtypes = (ctypes.c_void_p, ctypes.POINTER(ctypes.POINTER(ffi.gid_t)))
+ffi.libc.ucred_getgroups.argtypes = (
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.POINTER(ffi.gid_t)),  # pytype: disable=invalid-typevar
+)
 ffi.libc.ucred_getgroups.restype = ctypes.c_int
 
 
