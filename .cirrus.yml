@@ -29,8 +29,11 @@ task:
         PYTHON_EXE: python3.7
         PIP_EXE: pip-3.7
 
+  env:
+    CODECOV_TOKEN: ENCRYPTED[9d69092d41f535a990b2a132be9a36db878fe43cab8f174f276c55adcbc1e8fd58f692a52d4124191520c0338b5b54b9]
+
   install_script:
-    - pkg install -y $PYTHON_PORT_NAMES cmake ninja gcc
+    - pkg install -y $PYTHON_PORT_NAMES cmake ninja gcc bash
     - |
       set -e
       if [ -n "$PIP_PORT_NAME" ]; then
@@ -45,4 +48,7 @@ task:
     - pipenv install --dev --deploy
 
   test_script:
-    - pipenv run pytest
+    - pipenv run pytest --cov-report=xml tests/
+
+  codecov_upload_script:
+    - OS="$FREEBSD_IMAGE" bash <(curl -s https://codecov.io/bash) -e OS,PYTHON_VERSION -n "$FREEBSD_IMAGE-$PYTHON_VERSION" -Z

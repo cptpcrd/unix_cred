@@ -91,4 +91,15 @@ jobs:
         run: pipenv install --dev --deploy
 
       - name: Run tests
-        run: pipenv run pytest --basetemp=/tmp/pytest-unix_cred
+        run: pipenv run pytest --basetemp=/tmp/pytest-unix_cred --cov-report=xml tests/
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1.0.7
+        with:
+          name: ${{ matrix.os }}-${{ matrix.python-version }}
+          fail_ci_if_error: true
+          env_vars: OS,PYTHON_VERSION,JOB
+        env:
+          JOB: ${{ github.job }}
+          OS: ${{ matrix.os }}
+          PYTHON_VERSION: ${{ matrix.python-version }}
