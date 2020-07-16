@@ -1,7 +1,3 @@
-[build-system]
-# https://github.com/scikit-build/ninja-python-distributions/issues/27#issuecomment-551654697
-requires = ["setuptools", "wheel", "scikit-build"]
-
 [tool.black]
 line-length = 100
 exclude = '''
