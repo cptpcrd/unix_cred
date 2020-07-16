@@ -61,7 +61,7 @@ def getpeerucred(sock: Union[socket.socket, int]) -> Ucred:
         raise util.build_oserror(errno.EINVAL)
 
     try:
-        groups_ptr = ctypes.POINTER(ffi.gid_t)()
+        groups_ptr = ctypes.POINTER(ffi.gid_t)()  # pytype: disable=not-callable
         ngroups = ffi.libc.ucred_getgroups(raw_ucred, ctypes.pointer(groups_ptr))
         if ngroups < 0:
             raise util.build_oserror(errno.EINVAL)
