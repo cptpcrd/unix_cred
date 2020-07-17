@@ -37,9 +37,6 @@ class Ucred:
     uid: int
     gid: int
 
-    def __str__(self) -> str:
-        return repr(self)
-
 
 def get_ucred(sock: Union[socket.socket, int]) -> Ucred:
     with util.with_socket_or_fd(sock) as sock_obj:

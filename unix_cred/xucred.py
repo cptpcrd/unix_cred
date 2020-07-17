@@ -78,9 +78,6 @@ class Xucred:
     def gid(self) -> int:
         return self.groups[0]
 
-    def __str__(self) -> str:
-        return repr(self)
-
 
 def get_xucred(sock: Union[socket.socket, int]) -> Xucred:
     with util.with_socket_or_fd(sock) as sock_obj:
