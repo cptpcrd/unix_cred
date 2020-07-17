@@ -3,6 +3,8 @@ import pathlib
 import socket
 import sys
 
+import pytest
+
 from . import util
 
 if sys.platform.startswith(("solaris", "illumos")):
@@ -29,6 +31,9 @@ if sys.platform.startswith(("solaris", "illumos")):
             assert cred.sgid == os.getegid()
 
             assert set(cred.groups) <= set(os.getgroups())
+
+        with pytest.raises(OSError, match="Bad file descriptor"):
+            peerucred.getpeerucred(65535)
 
     def test_peerucred_pair() -> None:
         sock_a, sock_b = socket.socketpair(socket.AF_UNIX)

@@ -3,6 +3,8 @@ import pathlib
 import socket
 import sys
 
+import pytest
+
 from . import util
 
 if sys.platform.startswith(("linux", "openbsd", "netbsd")):
@@ -21,6 +23,9 @@ if sys.platform.startswith(("linux", "openbsd", "netbsd")):
             assert cred.uid == os.geteuid()
             assert cred.gid == os.getegid()
             assert cred.pid == os.getpid()
+
+        with pytest.raises(OSError, match="Bad file descriptor"):
+            ucred.get_ucred(65535)
 
     def test_ucred_pair() -> None:
         sock_a, sock_b = socket.socketpair(socket.AF_UNIX)

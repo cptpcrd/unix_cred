@@ -3,6 +3,8 @@ import pathlib
 import socket
 import sys
 
+import pytest
+
 import unix_cred
 
 from . import util
@@ -16,6 +18,9 @@ def test_get_peer_uid_gid(tmp_path: pathlib.Path) -> None:
 
     assert unix_cred.get_peer_uid_gid(server_cli) == (os.geteuid(), os.getegid())
     assert unix_cred.get_peer_uid_gid(server_cli.fileno()) == (os.geteuid(), os.getegid())
+
+    with pytest.raises(OSError, match="Bad file descriptor"):
+        unix_cred.get_peer_uid_gid(65535)
 
 
 def test_get_peer_uid_gid_pair() -> None:
@@ -43,6 +48,9 @@ if sys.platform.startswith(("linux", "openbsd", "netbsd", "freebsd", "solaris", 
             assert gid == os.getegid()
             assert pid in (0, os.getpid())
 
+        with pytest.raises(OSError, match="Bad file descriptor"):
+            unix_cred.get_peer_pid_uid_gid(65535)
+
     def test_get_peer_pid_uid_gid_pair() -> None:
         sock_a, sock_b = socket.socketpair(socket.AF_UNIX)
 
@@ -67,6 +75,9 @@ if sys.platform.startswith(("openbsd", "netbsd", "freebsd", "dragonfly", "darwin
 
         assert unix_cred.getpeereid(server_cli) == (os.geteuid(), os.getegid())
         assert unix_cred.getpeereid(server_cli.fileno()) == (os.geteuid(), os.getegid())
+
+        with pytest.raises(OSError, match="Bad file descriptor"):
+            unix_cred.getpeereid(65535)
 
     def test_getpeereid_pair() -> None:
         sock_a, sock_b = socket.socketpair(socket.AF_UNIX)

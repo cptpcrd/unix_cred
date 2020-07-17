@@ -3,6 +3,8 @@ import pathlib
 import socket
 import sys
 
+import pytest
+
 from . import util
 
 if sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
@@ -24,6 +26,9 @@ if sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
 
             if hasattr(cred, "pid"):
                 assert cred.pid in (0, os.getpid())
+
+        with pytest.raises(OSError, match="Bad file descriptor"):
+            xucred.get_xucred(65535)
 
     def test_xucred_pair() -> None:
         sock_a, sock_b = socket.socketpair(socket.AF_UNIX)
