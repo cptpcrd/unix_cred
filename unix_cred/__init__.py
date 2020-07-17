@@ -98,8 +98,7 @@ elif sys.platform.startswith(("solaris", "illumos")):
     __all__.append("get_peer_pid_uid_gid")
 
 
-if "get_peer_uid_gid" in locals():
-    get_peer_uid_gid.__doc__ = """
+get_peer_uid_gid.__doc__ = """
 Get the UID and GID of the peer of the given socket.
 
 Args:
