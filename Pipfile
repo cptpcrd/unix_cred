@@ -5,8 +5,6 @@ verify_ssl = true
 
 [packages]
 dataclasses = {version = "~=0.6", markers = "python_version < '3.7'"}
-importlib-metadata = {version = "~=0.6", markers = "python_version < '3.8'"}
-zipp = {version = "~=0.5", markers = "python_version < '3.8'"}
 
 [dev-packages]
 # Pytype requires ninja, which requires scikit-build when building
@@ -23,3 +21,7 @@ autopep8 = "~=1.5.3"
 
 pytest = "~=5.4.3"
 pytest-cov = "~=2.10.0"
+
+# Required by pytest, but not properly pulled in by Pipenv
+importlib-metadata = {version = "~=0.6", markers = "python_version < '3.8'"}
+zipp = {version = "~=0.5", markers = "python_version < '3.8'"}
