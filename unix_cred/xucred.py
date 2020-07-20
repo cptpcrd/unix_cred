@@ -57,7 +57,9 @@ class _Xucred(ctypes.Structure):  # pylint: disable=too-few-public-methods
         ):
             raise util.build_oserror(errno.EINVAL)
 
-        kwargs = {"uid": self.cr_uid, "groups": list(self.cr_groups[: self.cr_ngroups])}
+        groups = list(self.cr_groups[: self.cr_ngroups])
+
+        kwargs = {"uid": self.cr_uid, "gid": groups[0], "groups": groups}
 
         if _HAS_PID:
             kwargs["pid"] = self.cr_pid if self.cr_pid > 0 else None
@@ -68,15 +70,12 @@ class _Xucred(ctypes.Structure):  # pylint: disable=too-few-public-methods
 @dataclasses.dataclass
 class Xucred:
     uid: int
+    gid: int
 
     groups: List[int]
 
     if _HAS_PID:
         pid: Optional[int]
-
-    @property
-    def gid(self) -> int:
-        return self.groups[0]
 
 
 def get_xucred(sock: Union[socket.socket, int]) -> Xucred:

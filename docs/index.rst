@@ -119,9 +119,6 @@ The ``xucred`` module provides an interface to the ``xucred`` interface on FreeB
 
         The GID of the connected peer.
 
-        Currently, this is implemented as a read-only property that returns ``self.groups[0]``.
-        Hence, changing the ``groups`` list may change the value of this attribute,
-
    .. py:attribute:: groups
 
         :type: list[int]
