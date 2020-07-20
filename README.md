@@ -25,7 +25,7 @@ A Python library that simplifies reading peer credentials from Unix domain socke
 >>> assert unix_cred.get_peer_uid_gid(server_cli) == (os.geteuid(), os.getegid())
 >>> # Not supported on all systems
 >>> # On some systems this function is not defined; on certain versions of other systems
->>> # it may return 0 for the PID
+>>> # it may return None for the PID
 >>> assert unix_cred.get_peer_pid_uid_gid(cli) == (os.getpid(), os.geteuid(), os.getegid())
 >>> assert unix_cred.get_peer_pid_uid_gid(server_cli) == (os.getpid(), os.geteuid(), os.getegid())
 ```
