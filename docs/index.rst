@@ -10,6 +10,10 @@ Welcome to unix-cred's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+Cross-platform interfaces
+=========================
+
+For most use cases, these interfaces (in particular :py:func:`get_peer_uid_gid()`) should be enough.
 
 .. py:function:: get_peer_uid_gid(sock)
 
@@ -25,6 +29,12 @@ Welcome to unix-cred's documentation!
    (for example, FreeBSD prior to version 13 does not).
 
    Availability: Linux, OpenBSD, NetBSD, FreeBSD (PID only available on version 13+), Solaris, Illumos
+
+
+Platform-specific interfaces
+============================
+
+In most cases, you should use the cross-platform interfaces. However, the platform-specific interfaces may be useful (for example, they may provide additional information).
 
 .. py:function:: getpeereid(sock)
 
