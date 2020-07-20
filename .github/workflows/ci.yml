@@ -1,5 +1,9 @@
 name: CI
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  release:
+    types: [published]
 
 defaults:
   run:
@@ -103,3 +107,22 @@ jobs:
           JOB: ${{ github.job }}
           OS: ${{ matrix.os }}
           PYTHON_VERSION: ${{ matrix.python-version }}
+
+  publish:
+    name: Publish
+
+    needs:
+      - lint
+      - format
+      - test
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@v1.3.1
+        # Only run for new releases
+        if: github.event_name == 'release'
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_TOKEN }}
