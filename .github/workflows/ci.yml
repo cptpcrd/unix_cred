@@ -11,36 +11,8 @@ defaults:
     shell: bash
 
 jobs:
-  lint:
-    name: Linting
-
-    strategy:
-      fail-fast: false
-
-      matrix:
-        python-version: [3.7, 3.8]
-        os: [ubuntu-latest, macos-latest]
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Set up repo
-        uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install pipenv
-        run: pip install pipenv
-
-      - name: Install dependencies
-        run: pipenv install --dev --deploy
-
-      - name: Lint code
-        run: pipenv run ./scripts/check.sh
-
-  format:
-    name: Formatting
+  format_lint:
+    name: Formatting and linting
 
     strategy:
       fail-fast: false
@@ -69,6 +41,9 @@ jobs:
           set -e
           pipenv run ./scripts/format.sh
           [ -z "$(git status --porcelain=v1)" ]
+
+      - name: Lint code
+        run: pipenv run ./scripts/check.sh
 
   test:
     name: Tests
@@ -154,8 +129,7 @@ jobs:
     name: Publish
 
     needs:
-      - lint
-      - format
+      - format_lint
       - test
       - build
 
