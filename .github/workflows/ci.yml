@@ -145,7 +145,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
       - name: Install Sphinx
-        run: pip install sphinx
+        run: pip install sphinx sphinx_rtd_theme
 
       - name: Build docs
         run: make -C docs html
