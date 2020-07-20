@@ -2,3 +2,6 @@ coverage:
   status:
     project: on
     patch: off
+
+ignore:
+  - setup.py
