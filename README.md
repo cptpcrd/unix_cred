@@ -5,3 +5,25 @@
 [![codecov](https://codecov.io/gh/cptpcrd/unix_cred/branch/master/graph/badge.svg)](https://codecov.io/gh/cptpcrd/unix_cred)
 
 A Python library that simplifies reading peer credentials from Unix domain sockets.
+
+## Examples
+
+```python
+>>> import os
+>>> import socket
+>>> import unix_cred
+>>> server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+>>> server.bind("/tmp/unix_cred-test")
+>>> server.listen(1)
+>>> cli = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+>>> cli.connect("/tmp/unix_cred-test")
+>>> server_cli = server.accept()[0]
+>>> # Check the peer credentials on each end against the current process's
+>>> assert unix_cred.get_peer_uid_gid(cli) == (os.geteuid(), os.getegid())
+>>> assert unix_cred.get_peer_uid_gid(server_cli) == (os.geteuid(), os.getegid())
+>>> # Not supported on all systems
+>>> # On some systems this function is not defined; on certain versions of other systems
+>>> # it may return 0 for the PID
+>>> assert unix_cred.get_peer_pid_uid_gid(cli) == (os.getpid(), os.geteuid(), os.getegid())
+>>> assert unix_cred.get_peer_pid_uid_gid(server_cli) == (os.getpid(), os.geteuid(), os.getegid())
+```
