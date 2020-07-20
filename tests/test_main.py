@@ -46,7 +46,7 @@ if sys.platform.startswith(("linux", "openbsd", "netbsd", "freebsd", "solaris", 
         ]:
             assert uid == os.geteuid()
             assert gid == os.getegid()
-            assert pid in (0, os.getpid())
+            assert pid in (None, os.getpid())
 
         with pytest.raises(OSError, match="Bad file descriptor"):
             unix_cred.get_peer_pid_uid_gid(65535)
@@ -62,7 +62,7 @@ if sys.platform.startswith(("linux", "openbsd", "netbsd", "freebsd", "solaris", 
         ]:
             assert uid == os.geteuid()
             assert gid == os.getegid()
-            assert pid in (0, os.getpid())
+            assert pid in (None, os.getpid())
 
 
 if sys.platform.startswith(("openbsd", "netbsd", "freebsd", "dragonfly", "darwin")):

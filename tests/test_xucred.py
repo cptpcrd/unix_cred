@@ -25,7 +25,7 @@ if sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
             assert set(cred.groups) <= set(os.getgroups())
 
             if hasattr(cred, "pid"):
-                assert cred.pid in (0, os.getpid())
+                assert cred.pid in (None, os.getpid())
 
         with pytest.raises(OSError, match="Bad file descriptor"):
             xucred.get_xucred(65535)
@@ -44,4 +44,4 @@ if sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
             assert set(cred.groups) <= set(os.getgroups())
 
             if hasattr(cred, "pid"):
-                assert cred.pid in (0, os.getpid())
+                assert cred.pid in (None, os.getpid())

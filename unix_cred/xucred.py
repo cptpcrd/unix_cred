@@ -4,7 +4,7 @@ import dataclasses
 import errno
 import socket
 import sys
-from typing import List, Union
+from typing import List, Optional, Union
 
 from . import constants, ffi, util
 
@@ -60,7 +60,7 @@ class _Xucred(ctypes.Structure):  # pylint: disable=too-few-public-methods
         kwargs = {"uid": self.cr_uid, "groups": list(self.cr_groups[: self.cr_ngroups])}
 
         if _HAS_PID:
-            kwargs["pid"] = self.cr_pid
+            kwargs["pid"] = self.cr_pid if self.cr_pid > 0 else None
 
         return Xucred(**kwargs)
 
@@ -72,7 +72,7 @@ class Xucred:
     groups: List[int]
 
     if _HAS_PID:
-        pid: int
+        pid: Optional[int]
 
     @property
     def gid(self) -> int:
