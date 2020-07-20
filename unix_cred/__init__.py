@@ -84,7 +84,7 @@ elif sys.platform.startswith("freebsd"):
 
     def get_peer_pid_uid_gid(sock: Union[socket.socket, int]) -> Tuple[Optional[int], int, int]:
         cred = xucred.get_xucred(sock)
-        return (cred.pid if cred.pid > 0 else None), cred.uid, cred.gid
+        return cred.pid, cred.uid, cred.gid
 
     __all__.append("get_peer_pid_uid_gid")
 
