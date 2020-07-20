@@ -118,11 +118,12 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    # Only run for new releases
+    if: github.event_name == 'release'
+
     steps:
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@v1.3.1
-        # Only run for new releases
-        if: github.event_name == 'release'
         with:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
