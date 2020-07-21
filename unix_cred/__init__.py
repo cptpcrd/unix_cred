@@ -5,7 +5,7 @@ from typing import Optional, Tuple, Union
 
 from . import ffi, util
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = ["get_peer_uid_gid"]
 
