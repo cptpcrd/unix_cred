@@ -76,13 +76,13 @@ The reason that the interfaces for all three of these are in one module is that 
 
         :type: int
 
-        The UID of the connected peer.
+        The effective UID of the connected peer.
 
    .. py:attribute:: gid
 
         :type: int
 
-        The GID of the connected peer.
+        The effective GID of the connected peer.
 
 .. py:function:: get_ucred(sock)
 
@@ -121,13 +121,13 @@ The ``xucred`` module provides an interface to the ``xucred`` interface on FreeB
 
         :type: int
 
-        The UID of the connected peer.
+        The effective UID of the connected peer.
 
    .. py:attribute:: gid
 
         :type: int
 
-        The GID of the connected peer.
+        The effective GID of the connected peer.
 
    .. py:attribute:: groups
 
