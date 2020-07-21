@@ -28,11 +28,6 @@ task:
         PIP_PORT_NAME: py37-pip
         PYTHON_EXE: python3.7
         PIP_EXE: pip-3.7
-    - env:
-        PYTHON_VERSION: 3.6
-        PYTHON_PORT_NAMES: python36 py36-sqlite3
-        PYTHON_EXE: python3.6
-        PIP_EXE: python3.6 -m pip
 
   env:
     CODECOV_TOKEN: ENCRYPTED[9d69092d41f535a990b2a132be9a36db878fe43cab8f174f276c55adcbc1e8fd58f692a52d4124191520c0338b5b54b9]
@@ -49,7 +44,7 @@ task:
         $PYTHON_EXE /tmp/get-pip.py install
         $PIP_EXE install -U pip
       fi
-    - $PIP_EXE install pipenv 'setuptools>=46.4.0'
+    - $PIP_EXE install pipenv
     - pipenv install --dev --deploy
 
   test_script:
