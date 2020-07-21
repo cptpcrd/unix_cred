@@ -28,12 +28,14 @@ if sys.platform.startswith(("solaris", "illumos")):
 
 
 if sys.platform.startswith(("openbsd", "netbsd", "freebsd", "dragonfly", "darwin")):
-    ffi.libc.getpeereid.argtypes = (
+    libc = ffi.load_libc()
+
+    libc.getpeereid.argtypes = (
         ctypes.c_int,
         ctypes.POINTER(ffi.uid_t),
         ctypes.POINTER(ffi.gid_t),
     )
-    ffi.libc.getpeereid.restype = ctypes.c_int
+    libc.getpeereid.restype = ctypes.c_int
 
     def getpeereid(sock: Union[socket.socket, int]) -> Tuple[int, int]:
         uid = ffi.uid_t()
@@ -42,7 +44,7 @@ if sys.platform.startswith(("openbsd", "netbsd", "freebsd", "dragonfly", "darwin
         if not isinstance(sock, int):
             sock = sock.fileno()
 
-        res = ffi.libc.getpeereid(sock, ctypes.pointer(uid), ctypes.pointer(gid))
+        res = libc.getpeereid(sock, ctypes.pointer(uid), ctypes.pointer(gid))
         if res != 0:
             raise util.build_oserror(ctypes.get_errno())
 
