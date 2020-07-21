@@ -9,7 +9,13 @@
 
 A Python library that simplifies reading peer credentials from Unix domain sockets.
 
-## Examples
+## Installation
+
+```
+$ pip install unix-cred
+```
+
+### Examples
 
 ```python
 >>> import os
