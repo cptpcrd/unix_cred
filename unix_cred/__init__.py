@@ -66,8 +66,7 @@ elif sys.platform.startswith("linux"):
 elif sys.platform.startswith(("solaris", "illumos")):
 
     def get_peer_uid_gid(sock: Union[socket.socket, int]) -> Tuple[int, int]:
-        cred = peerucred.getpeerucred(sock)
-        return cred.euid, cred.egid
+        return peerucred._get_peer_uid_gid(sock)  # pylint: disable=protected-access
 
 
 else:
@@ -94,8 +93,7 @@ elif sys.platform.startswith("freebsd"):
 elif sys.platform.startswith(("solaris", "illumos")):
 
     def get_peer_pid_uid_gid(sock: Union[socket.socket, int]) -> Tuple[Optional[int], int, int]:
-        cred = peerucred.getpeerucred(sock)
-        return cred.pid, cred.euid, cred.egid
+        return peerucred._get_peer_pid_uid_gid(sock)  # pylint: disable=protected-access
 
     __all__.append("get_peer_pid_uid_gid")
 

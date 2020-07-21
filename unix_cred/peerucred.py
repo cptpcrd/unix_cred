@@ -1,8 +1,9 @@
+import contextlib
 import ctypes
 import dataclasses
 import errno
 import socket
-from typing import List, Union
+from typing import Iterator, List, Tuple, Union
 
 from . import ffi, util
 
@@ -53,7 +54,8 @@ class Ucred:  # pylint: disable=too-many-instance-attributes
     groups: List[int]
 
 
-def getpeerucred(sock: Union[socket.socket, int]) -> Ucred:
+@contextlib.contextmanager
+def _getpeerucred_raw(sock: Union[socket.socket, int]) -> Iterator[ctypes.c_void_p]:
     if not isinstance(sock, int):
         sock = sock.fileno()
 
@@ -66,6 +68,13 @@ def getpeerucred(sock: Union[socket.socket, int]) -> Ucred:
         raise util.build_oserror(errno.EINVAL)
 
     try:
+        yield raw_ucred
+    finally:
+        libc.ucred_free(raw_ucred)
+
+
+def getpeerucred(sock: Union[socket.socket, int]) -> Ucred:
+    with _getpeerucred_raw(sock) as raw_ucred:
         groups_ptr = ctypes.POINTER(ffi.gid_t)()  # pytype: disable=not-callable
         ngroups = libc.ucred_getgroups(raw_ucred, ctypes.pointer(groups_ptr))
         if ngroups < 0:
@@ -73,7 +82,7 @@ def getpeerucred(sock: Union[socket.socket, int]) -> Ucred:
 
         groups = [groups_ptr[i].value for i in range(ngroups)]
 
-        ucred = Ucred(
+        return Ucred(
             pid=libc.ucred_getpid(raw_ucred),
             ruid=libc.ucred_getruid(raw_ucred),
             euid=libc.ucred_geteuid(raw_ucred),
@@ -83,7 +92,17 @@ def getpeerucred(sock: Union[socket.socket, int]) -> Ucred:
             sgid=libc.ucred_getsgid(raw_ucred),
             groups=groups,
         )
-    finally:
-        libc.ucred_free(raw_ucred)
 
-    return ucred
+
+def _get_peer_uid_gid(sock: Union[socket.socket, int]) -> Tuple[int, int]:
+    with _getpeerucred_raw(sock) as raw_ucred:
+        return libc.ucred_geteuid(raw_ucred), libc.ucred_getegid(raw_ucred)
+
+
+def _get_peer_pid_uid_gid(sock: Union[socket.socket, int]) -> Tuple[int, int, int]:
+    with _getpeerucred_raw(sock) as raw_ucred:
+        return (
+            libc.ucred_getpid(raw_ucred),
+            libc.ucred_geteuid(raw_ucred),
+            libc.ucred_getegid(raw_ucred),
+        )
