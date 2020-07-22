@@ -112,7 +112,7 @@ Returns:
 
 if "get_peer_pid_uid_gid" in locals():
     get_peer_pid_uid_gid.__doc__ = """
-Try to get the PID, UID and GID of the peer of the given socket.
+Try to get the PID, UID, and GID of the peer of the given socket.
 
 Args:
     sock: The socket for which to obtain credentials.
