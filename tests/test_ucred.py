@@ -39,3 +39,19 @@ if sys.platform.startswith(("linux", "openbsd", "netbsd")):
             assert cred.uid == os.geteuid()
             assert cred.gid == os.getegid()
             assert cred.pid == os.getpid()
+
+
+if sys.platform.startswith("linux"):
+
+    def test_ucred_udp_pair() -> None:
+        sock_a, sock_b = socket.socketpair(socket.AF_UNIX, socket.SOCK_DGRAM)
+
+        for cred in [
+            ucred.get_ucred(sock_a),
+            ucred.get_ucred(sock_a.fileno()),
+            ucred.get_ucred(sock_b),
+            ucred.get_ucred(sock_b.fileno()),
+        ]:
+            assert cred.uid == os.geteuid()
+            assert cred.gid == os.getegid()
+            assert cred.pid == os.getpid()
