@@ -26,7 +26,7 @@ For most use cases, these interfaces (in particular :py:func:`get_peer_uid_gid()
 
    On some platforms, this function is not available. On other platforms, the returned PID
    may be ``None`` if the current version of that platform does not support retrieving the PID
-   (for example, FreeBSD prior to version 13 does not).
+   (for example, FreeBSD prior to version 13 does not, and will always return ``None``).
 
    Availability: Linux, OpenBSD, NetBSD, FreeBSD (PID only available on version 13+), Solaris, Illumos
 
@@ -110,8 +110,8 @@ The ``xucred`` module provides an interface to the ``xucred`` interface on FreeB
 
         The PID of the connected peer.
 
-        This attribute is only defined on FreeBSD, and it is only set on FreeBSD 13+
-        (on previous versions it is always ``None``). If you want to check for the PID
+        This attribute is only defined on FreeBSD, and it is only set on FreeBSD 13+ (on
+        previous versions of FreeBSD it is always ``None``). If you want to check for the PID
         in a cross-platform way, it is recommended to use ``getattr(<xucred>, "pid", None)``
         and then check for a ``None`` value.
 
