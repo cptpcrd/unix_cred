@@ -329,7 +329,13 @@
         },
         "pytype": {
             "hashes": [
-                "sha256:2382e535b371338ea18f1fd5ab06e01bec4078ca62d5118f84d61d76a9413eda"
+                "sha256:0cdc97996759e9bf1389a3b0644c503fc38f581572a213c384511bf33d910d93",
+                "sha256:2382e535b371338ea18f1fd5ab06e01bec4078ca62d5118f84d61d76a9413eda",
+                "sha256:70ae9014de5609b2f00e19480671b1eacc048d46e458e53bc965fe324d57c87f",
+                "sha256:783cc42579f034c62c662c4bcefe37a9e6df989dca12f87f64e40e5688561238",
+                "sha256:8bbd58aab7ca50f4eb6a03d69939b81415bc81479638d2ebabf7f0e63cb607d0",
+                "sha256:8da8eb89e6ec0b0f4e546c6e463efd31b3df9c6a2a1ce160f5f457c4e9de28ee",
+                "sha256:e93614bb3e38c9e2ed3b4646bd2a726c2b4d2b8a92bf74a1a76d435d67ef3ced"
             ],
             "index": "pypi",
             "version": "==2020.7.20"
