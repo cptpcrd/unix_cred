@@ -135,8 +135,10 @@ The ``xucred`` module provides an interface to the ``xucred`` interface on FreeB
 
         The supplementary groups of the connected peer.
 
-        This list may be incomplete if the peer has more then ``XU_NGROUPS`` (usually 16)
-        supplementary groups.
+        .. note::
+            On macOS, the value placed in this attribute differs from that of
+            `os.getgroups() <https://docs.python.org/3/library/os.html#os.getgroups>`.
+            Effectively, it always behaves as if the deployment target is less than 10.5.
 
 .. py:function:: get_xucred(sock)
 
