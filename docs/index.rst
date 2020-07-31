@@ -137,7 +137,7 @@ The ``xucred`` module provides an interface to the ``xucred`` interface on FreeB
 
         .. note::
             On macOS, the value placed in this attribute differs from that of
-            `os.getgroups() <https://docs.python.org/3/library/os.html#os.getgroups>`.
+            `os.getgroups() <https://docs.python.org/3/library/os.html#os.getgroups>`_.
             Effectively, it always behaves as if the deployment target is less than 10.5.
 
         .. note::
