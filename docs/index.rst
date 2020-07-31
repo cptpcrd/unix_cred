@@ -140,6 +140,11 @@ The ``xucred`` module provides an interface to the ``xucred`` interface on FreeB
             `os.getgroups() <https://docs.python.org/3/library/os.html#os.getgroups>`.
             Effectively, it always behaves as if the deployment target is less than 10.5.
 
+        .. note::
+            On FreeBSD, this group list is truncated to the first 16 supplementary groups.
+            (Technically, it's also truncated on DragonflyBSD and macOS, but they only support
+            16 groups normally.)
+
 .. py:function:: get_xucred(sock)
 
    Returns a :py:class:`Xucred` object representing the credentials of the peer connected to the
