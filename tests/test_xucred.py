@@ -58,3 +58,39 @@ if sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
 
             if hasattr(cred, "pid"):
                 assert cred.pid in (None, os.getpid())
+
+    def test_xucred_convert() -> None:
+        # pylint: disable=protected-access
+
+        xucred._Xucred(
+            cr_version=xucred.constants.XUCRED_VERSION,
+            cr_ngroups=1,
+        ).convert()
+
+        xucred._Xucred(
+            cr_version=xucred.constants.XUCRED_VERSION,
+            cr_ngroups=4,
+        ).convert()
+
+        xucred._Xucred(
+            cr_version=xucred.constants.XUCRED_VERSION,
+            cr_ngroups=xucred.constants.XU_NGROUPS,
+        ).convert()
+
+        with pytest.raises(OSError, match="Invalid argument"):
+            xucred._Xucred(
+                cr_version=xucred.constants.XUCRED_VERSION,
+                cr_ngroups=0,
+            ).convert()
+
+        with pytest.raises(OSError, match="Invalid argument"):
+            xucred._Xucred(
+                cr_version=xucred.constants.XUCRED_VERSION + 1,
+                cr_ngroups=1,
+            )
+
+        with pytest.raises(OSError, match="Invalid argument"):
+            xucred._Xucred(
+                cr_version=xucred.constants.XUCRED_VERSION,
+                cr_ngroups=xucred.constants.XU_NGROUPS + 1,
+            ).convert()
