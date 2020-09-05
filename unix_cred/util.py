@@ -6,7 +6,9 @@ from typing import Iterator, Union
 
 
 def build_oserror(
-    eno: int, filename: Union[str, bytes, None] = None, filename2: Union[str, bytes, None] = None,
+    eno: int,
+    filename: Union[str, bytes, None] = None,
+    filename2: Union[str, bytes, None] = None,
 ) -> OSError:
     return OSError(eno, os.strerror(eno), filename, None, filename2)
 

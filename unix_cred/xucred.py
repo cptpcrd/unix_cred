@@ -81,7 +81,9 @@ class Xucred:
 def get_xucred(sock: Union[socket.socket, int]) -> Xucred:
     with util.with_socket_or_fd(sock) as sock_obj:
         buf = sock_obj.getsockopt(
-            0, socket.LOCAL_PEERCRED, ctypes.sizeof(_Xucred),  # pylint: disable=no-member
+            0,
+            socket.LOCAL_PEERCRED,  # pylint: disable=no-member
+            ctypes.sizeof(_Xucred),
         )
 
     return _Xucred.from_buffer_copy(buf).convert()
