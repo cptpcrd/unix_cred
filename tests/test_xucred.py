@@ -87,7 +87,7 @@ if sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
             xucred._Xucred(
                 cr_version=xucred.constants.XUCRED_VERSION + 1,
                 cr_ngroups=1,
-            )
+            ).convert()
 
         with pytest.raises(OSError, match="Invalid argument"):
             xucred._Xucred(
