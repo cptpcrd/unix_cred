@@ -9,4 +9,4 @@ for cmd in black autopep8 isort; do
 done
 
 # Order is important. There are a few things that black and autopep8 disagree on.
-black unix_cred tests && autopep8 --in-place --recursive unix_cred tests && isort --recursive unix_cred tests
+black unix_cred tests && autopep8 --in-place --recursive unix_cred tests && isort unix_cred tests

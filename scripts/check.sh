@@ -8,4 +8,4 @@ for cmd in flake8 isort mypy pylint pytype; do
     fi
 done
 
-flake8 unix_cred tests && isort --recursive --check unix_cred tests && mypy --strict -p unix_cred -p tests && pytype unix_cred tests && pylint unix_cred tests
+flake8 unix_cred tests && isort --check unix_cred tests && mypy --strict -p unix_cred -p tests && pytype unix_cred tests && pylint unix_cred tests
