@@ -14,14 +14,12 @@ if sys.platform.startswith(("linux", "openbsd", "netbsd")):
 
     __all__.append("ucred")
 
-
-if sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
+elif sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
     from . import xucred  # noqa: F401
 
     __all__.append("xucred")
 
-
-if sys.platform.startswith(("solaris", "illumos")):
+elif sys.platform.startswith(("solaris", "illumos")):
     from . import peerucred  # noqa: F401
 
     __all__.append("peerucred")
