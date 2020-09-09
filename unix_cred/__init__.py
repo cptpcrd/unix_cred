@@ -1,9 +1,6 @@
-import ctypes
 import socket
 import sys
 from typing import Optional, Tuple, Union
-
-from . import ffi, util
 
 __version__ = "0.2.0"
 
@@ -14,54 +11,25 @@ if sys.platform.startswith(("linux", "openbsd", "netbsd")):
 
     __all__.append("ucred")
 
-elif sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
-    from . import xucred  # noqa: F401
-
-    __all__.append("xucred")
-
-elif sys.platform.startswith(("solaris", "illumos")):
-    from . import peerucred  # noqa: F401
-
-    __all__.append("peerucred")
-
-
-if sys.platform.startswith(("openbsd", "netbsd", "freebsd", "dragonfly", "darwin")):
-    libc = ffi.load_libc()
-
-    libc.getpeereid.argtypes = (
-        ctypes.c_int,
-        ctypes.POINTER(ffi.uid_t),
-        ctypes.POINTER(ffi.gid_t),
-    )
-    libc.getpeereid.restype = ctypes.c_int
-
-    def getpeereid(sock: Union[socket.socket, int]) -> Tuple[int, int]:
-        uid = ffi.uid_t()
-        gid = ffi.gid_t()
-
-        if not isinstance(sock, int):
-            sock = sock.fileno()
-
-        res = libc.getpeereid(sock, ctypes.pointer(uid), ctypes.pointer(gid))
-        if res != 0:
-            raise util.build_oserror(ctypes.get_errno())
-
-        return uid.value, gid.value
-
-    __all__.append("getpeereid")
-
-    def get_peer_uid_gid(sock: Union[socket.socket, int]) -> Tuple[int, int]:
-        return getpeereid(sock)
-
-
-elif sys.platform.startswith("linux"):
-
     def get_peer_uid_gid(sock: Union[socket.socket, int]) -> Tuple[int, int]:
         cred = ucred.get_ucred(sock)
         return cred.uid, cred.gid
 
 
+elif sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
+    from . import xucred  # noqa: F401
+
+    __all__.append("xucred")
+
+    def get_peer_uid_gid(sock: Union[socket.socket, int]) -> Tuple[int, int]:
+        cred = xucred.get_xucred(sock)
+        return cred.uid, cred.gid
+
+
 elif sys.platform.startswith(("solaris", "illumos")):
+    from . import peerucred  # noqa: F401
+
+    __all__.append("peerucred")
 
     def get_peer_uid_gid(sock: Union[socket.socket, int]) -> Tuple[int, int]:
         return peerucred._get_peer_uid_gid(sock)  # pylint: disable=protected-access

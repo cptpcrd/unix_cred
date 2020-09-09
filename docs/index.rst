@@ -36,17 +36,6 @@ Platform-specific interfaces
 
 In most cases, you should use the cross-platform interfaces. However, the platform-specific interfaces may be useful (for example, they may provide additional information).
 
-.. py:function:: getpeereid(sock)
-
-   Calls the BSD function ``getpeereid()`` on the given socket and returns the results as a
-   ``(uid, gid)`` tuple.
-
-   .. note::
-        This function is only here for completeness. In nearly all cases, you should use
-        the cross-platform function :py:func:`get_peer_uid_gid()` instead.
-
-   Availability: macOS, FreeBSD, OpenBSD, NetBSD, DragonflyBSD
-
 
 .. py:module:: ucred
    :platform: Linux, OpenBSD, NetBSD
