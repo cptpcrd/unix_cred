@@ -9,17 +9,12 @@ from typing import List, Optional, Union
 from . import constants, ffi, util
 
 if sys.platform.startswith("freebsd"):
-    _HAS_PID = True
 
     class _XcuredCr(ctypes.Union):  # pylint: disable=too-few-public-methods
         _fields_ = [
             ("cr_pid", ffi.pid_t),
             ("_cr_unused1", ctypes.c_void_p),
         ]
-
-
-else:
-    _HAS_PID = False
 
 
 class _Xucred(ctypes.Structure):  # pylint: disable=too-few-public-methods
@@ -59,12 +54,9 @@ class _Xucred(ctypes.Structure):  # pylint: disable=too-few-public-methods
 
         groups = list(self.cr_groups[: self.cr_ngroups])
 
-        kwargs = {"uid": self.cr_uid, "gid": groups[0], "groups": groups}
-
-        if _HAS_PID:
-            kwargs["pid"] = self.cr_pid if self.cr_pid > 0 else None
-
-        return Xucred(**kwargs)
+        return Xucred(
+            uid=self.cr_uid, gid=groups[0], groups=groups, pid=(getattr(self, "cr_pid", 0) or None)
+        )
 
 
 @dataclasses.dataclass
@@ -74,8 +66,7 @@ class Xucred:
 
     groups: List[int]
 
-    if _HAS_PID:
-        pid: Optional[int]
+    pid: Optional[int]
 
 
 def get_xucred(sock: Union[socket.socket, int]) -> Xucred:

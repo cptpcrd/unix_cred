@@ -99,10 +99,8 @@ The ``xucred`` module provides an interface to the ``xucred`` interface on FreeB
 
         The PID of the connected peer.
 
-        This attribute is only defined on FreeBSD, and it is only set on FreeBSD 13+ (on
-        previous versions of FreeBSD it is always ``None``). If you want to check for the PID
-        in a cross-platform way, it is recommended to use ``getattr(<xucred>, "pid", None)``
-        and then check for a ``None`` value.
+        This attribute is only set on FreeBSD 13+. On macOS/DragonFlyBSD, and on previous versions of FreeBSD,
+        it is always ``None``. Always make sure to check for a ``None`` value.
 
         Availability: FreeBSD 13+
 

@@ -36,8 +36,7 @@ if sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
 
             check_grouplist(cred.groups)
 
-            if hasattr(cred, "pid"):
-                assert cred.pid in (None, os.getpid())
+            assert cred.pid in (None, os.getpid())
 
         with pytest.raises(OSError, match="Bad file descriptor"):
             xucred.get_xucred(65535)
@@ -56,8 +55,7 @@ if sys.platform.startswith(("freebsd", "dragonfly", "darwin")):
 
             check_grouplist(cred.groups)
 
-            if hasattr(cred, "pid"):
-                assert cred.pid in (None, os.getpid())
+            assert cred.pid in (None, os.getpid())
 
     def test_xucred_convert() -> None:
         # pylint: disable=protected-access
