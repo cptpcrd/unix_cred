@@ -9,8 +9,10 @@ from . import constants, ffi, util
 
 if sys.platform.startswith("netbsd"):
     _SO_PEERCRED = constants.LOCAL_PEEREID
+    _LEVEL = 0
 else:
     _SO_PEERCRED = socket.SO_PEERCRED  # pylint: disable=no-member
+    _LEVEL = socket.SOL_SOCKET
 
 
 class _Ucred(ctypes.Structure):  # pylint: disable=too-few-public-methods
@@ -40,6 +42,6 @@ class Ucred:
 
 def get_ucred(sock: Union[socket.socket, int]) -> Ucred:
     with util.with_socket_or_fd(sock) as sock_obj:
-        buf = sock_obj.getsockopt(socket.SOL_SOCKET, _SO_PEERCRED, ctypes.sizeof(_Ucred))
+        buf = sock_obj.getsockopt(_LEVEL, _SO_PEERCRED, ctypes.sizeof(_Ucred))
 
     return _Ucred.from_buffer_copy(buf).convert()
