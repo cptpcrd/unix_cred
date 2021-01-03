@@ -17,4 +17,6 @@ def sock_bind_connect_accept(
     cli.connect(path)
     server_cli, _ = listener.accept()
 
+    listener.close()
+
     return cli, server_cli
