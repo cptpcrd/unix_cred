@@ -9,7 +9,7 @@ from . import ffi, util
 
 libc = ffi.load_libc()
 
-libc.getpeerucred.argtypes = (ctypes.c_int, ctypes.c_void_p)
+libc.getpeerucred.argtypes = (ctypes.c_int, ctypes.POINTER(ctypes.c_void_p))
 libc.getpeerucred.restype = ctypes.c_int
 
 libc.ucred_free.argtypes = (ctypes.c_void_p,)
