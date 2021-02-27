@@ -7,6 +7,8 @@ from typing import Union
 
 from . import constants, util
 
+_UGID_MAX = 2 ** 32 - 1
+
 if sys.platform.startswith("netbsd"):
     _SO_PEERCRED = constants.LOCAL_PEEREID
     _LEVEL = 0
@@ -37,5 +39,8 @@ def get_ucred(sock: Union[socket.socket, int]) -> Ucred:
         uid, gid, pid = _ucred.unpack(buf)
     else:
         pid, uid, gid = _ucred.unpack(buf)
+
+    if pid == 0 or uid == _UGID_MAX or gid == _UGID_MAX:
+        raise util.build_oserror(errno.EINVAL)
 
     return Ucred(pid=pid, uid=uid, gid=gid)

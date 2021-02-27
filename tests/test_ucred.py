@@ -42,6 +42,15 @@ if sys.platform.startswith(("linux", "openbsd", "netbsd")):
                 assert cred.gid == os.getegid()
                 assert cred.pid == os.getpid()
 
+    def test_ucred_error() -> None:
+        with socket.socket(socket.AF_UNIX) as sock:
+            with pytest.raises(OSError, match="Invalid argument|[nN]ot connected"):
+                ucred.get_ucred(sock)
+
+        with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM) as sock:
+            with pytest.raises(OSError, match="Invalid argument|[nN]ot connected"):
+                ucred.get_ucred(sock)
+
 
 if sys.platform.startswith("linux"):
 
