@@ -1,11 +1,11 @@
-import ctypes
-import ctypes.util
 import dataclasses
+import errno
 import socket
+import struct
 import sys
 from typing import Union
 
-from . import constants, ffi, util
+from . import constants, util
 
 if sys.platform.startswith("netbsd"):
     _SO_PEERCRED = constants.LOCAL_PEEREID
@@ -15,22 +15,11 @@ else:
     _LEVEL = socket.SOL_SOCKET
 
 
-class _Ucred(ctypes.Structure):  # pylint: disable=too-few-public-methods
-    if sys.platform.startswith("openbsd"):
-        _fields_ = [
-            ("uid", ffi.uid_t),
-            ("gid", ffi.gid_t),
-            ("pid", ffi.pid_t),
-        ]
-    else:
-        _fields_ = [
-            ("pid", ffi.pid_t),
-            ("uid", ffi.uid_t),
-            ("gid", ffi.gid_t),
-        ]
+_OPENBSD = sys.platform.startswith("openbsd")
 
-    def convert(self) -> "Ucred":
-        return Ucred(pid=self.pid, uid=self.uid, gid=self.gid)
+_ucred = struct.Struct("=IIi" if _OPENBSD else "=iII")
+
+assert _ucred.size == 12
 
 
 @dataclasses.dataclass
@@ -42,6 +31,11 @@ class Ucred:
 
 def get_ucred(sock: Union[socket.socket, int]) -> Ucred:
     with util.with_socket_or_fd(sock) as sock_obj:
-        buf = sock_obj.getsockopt(_LEVEL, _SO_PEERCRED, ctypes.sizeof(_Ucred))
+        buf = sock_obj.getsockopt(_LEVEL, _SO_PEERCRED, _ucred.size)
 
-    return _Ucred.from_buffer_copy(buf).convert()
+    if _OPENBSD:
+        uid, gid, pid = _ucred.unpack(buf)
+    else:
+        pid, uid, gid = _ucred.unpack(buf)
+
+    return Ucred(pid=pid, uid=uid, gid=gid)

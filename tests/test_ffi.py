@@ -1,7 +1,7 @@
 import ctypes
 import os
 
-import unix_cred
+import unix_cred.ffi
 
 
 def test_load_libc() -> None:
