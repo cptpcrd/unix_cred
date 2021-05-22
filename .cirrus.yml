@@ -18,16 +18,15 @@ task:
 
   matrix:
     - env:
+        PYTHON_VERSION: 3.9
+        PYTHON_PORT_NAMES: python39 py39-sqlite3
+        PYTHON_EXE: python3.9
+        PIP_EXE: python3.9 -m pip
+    - env:
         PYTHON_VERSION: 3.8
         PYTHON_PORT_NAMES: python38 py38-sqlite3
         PYTHON_EXE: python3.8
         PIP_EXE: python3.8 -m pip
-    - env:
-        PYTHON_VERSION: 3.7
-        PYTHON_PORT_NAMES: python37 py37-sqlite3
-        PIP_PORT_NAME: py37-pip
-        PYTHON_EXE: python3.7
-        PIP_EXE: pip-3.7
 
   env:
     CODECOV_TOKEN: ENCRYPTED[7fd98e242259728f112128dbeed669f6b339362b7a03193884fd56e27957d64a7dc11fcb9be67b68e7d44a96e86fc4d8]
