@@ -56,6 +56,23 @@ elif sys.platform.startswith("freebsd"):
     __all__.append("get_peer_pid_uid_gid")
 
 
+elif sys.platform.startswith("darwin"):
+    from . import util
+
+    _SOL_LOCAL = 0
+    _LOCAL_PEERPID = 0x002
+
+    def get_peerpid(sock: Union[socket.socket, int]) -> int:
+        with util.with_socket_or_fd(sock) as sock_obj:
+            return sock_obj.getsockopt(_SOL_LOCAL, _LOCAL_PEERPID)
+
+    def get_peer_pid_uid_gid(sock: Union[socket.socket, int]) -> Tuple[Optional[int], int, int]:
+        cred = xucred.get_xucred(sock)
+        pid = get_peerpid(sock)
+        return pid, cred.uid, cred.gid
+
+    __all__.extend(["get_peerpid", "get_peer_pid_uid_gid"])
+
 elif sys.platform.startswith(("solaris", "illumos")):
 
     def get_peer_pid_uid_gid(sock: Union[socket.socket, int]) -> Tuple[Optional[int], int, int]:

@@ -28,13 +28,20 @@ For most use cases, these interfaces (in particular :py:func:`get_peer_uid_gid()
    may be ``None`` if the current version of that platform does not support retrieving the PID
    (for example, FreeBSD prior to version 13 does not, and will always return ``None``).
 
-   Availability: Linux, OpenBSD, NetBSD, FreeBSD (PID only available on version 13+), Solaris, Illumos
+   Availability: Linux, OpenBSD, NetBSD, FreeBSD (PID only available on version 13+), macOS, Solaris, Illumos
 
 
 Platform-specific interfaces
 ============================
 
 In most cases, you should use the cross-platform interfaces. However, the platform-specific interfaces may be useful (for example, they may provide additional information).
+
+
+.. py:function:: get_peerpid(sock)
+
+   Returns the PID of the process that last accessed the given stream socket.
+
+   Availability: macOS
 
 
 .. py:module:: ucred
@@ -101,6 +108,8 @@ The ``xucred`` module provides an interface to the ``xucred`` interface on FreeB
 
         This attribute is only set on FreeBSD 13+. On macOS/DragonFlyBSD, and on previous versions of FreeBSD,
         it is always ``None``. Always make sure to check for a ``None`` value.
+
+        To get the PID on macOS, use :py:func:`get_peerpid()`.
 
         Availability: FreeBSD 13+
 
