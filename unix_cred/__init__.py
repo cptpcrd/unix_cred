@@ -104,7 +104,7 @@ Returns:
     A (pid, uid, gid) tuple representing the credentials of the given socket's peer.
 
     WARNING: The PID returned may be None if the current version of the platform does not
-    support retrieving the PID. For eximple, this is true on FreeBSD versions prior to
+    support retrieving the PID. For example, this is true on FreeBSD versions prior to
     FreeBSD 13. Callers should always check for the PID to be None.
 
 """
